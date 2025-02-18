@@ -28,8 +28,8 @@ anonymous_access = {
 }
 
 storage_object = {
-  key         = "my_picture.jpg"
-  source      = "/home/miroshnichenko_an/bridge-avif.avif"
+  key         = "elt.jpg"
+  source      = "/home/miroshnichenko_an/clopro/elt.jpg"
 }
 
 // Compute Instance Group vars (IG)
@@ -43,8 +43,9 @@ vms-ig_resources = {
   disk = 8  
 }
 deploy_policy = {
-  "max_unavailable" = 2
-  "max_creating"    = 2
-  "max_expansion"   = 2
+  "max_unavailable" = 1
+  "max_creating"    = 1
+  "max_expansion"   = 1
   "max_deleting"    = 2
 }
+

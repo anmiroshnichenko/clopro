@@ -39,7 +39,8 @@ resource "yandex_storage_bucket" "test" {
 resource "yandex_storage_object" "test-object" {
   access_key = yandex_iam_service_account_static_access_key.sa-static-key.access_key
   secret_key = yandex_iam_service_account_static_access_key.sa-static-key.secret_key
-  bucket     = yandex_storage_bucket.test.bucket
-  key        = var.storage_object["key"]
-  source     = var.storage_object["source"] 
+  bucket     = yandex_storage_bucket.test.bucket  
+  key         = "elt.jpg"
+  source      = "/home/miroshnichenko_an/clopro/elt.jpg"  
+  content_type = "image/jpg"       
 }
