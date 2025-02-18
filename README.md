@@ -37,11 +37,12 @@
    ![image](15.2/screenshots/3_1.jpg)
    ![image](15.2/screenshots/3_2.jpg)
  - Проверить работоспособность, удалив одну или несколько ВМ.   
-  #### Удаленные машины создались самостоятельно.   
-    ![image](15.2/screenshots/3_3.jpg)
-    ![image](15.2/screenshots/3_4.jpg)
-    ![image](15.2/screenshots/3_5.jpg)
-    ![image](15.2/screenshots/3_6.jpg)
+  #### Удаленные машины создались самостоятельно. 
+
+   ![image](15.2/screenshots/3_3.jpg)
+   ![image](15.2/screenshots/3_4.jpg)
+   ![image](15.2/screenshots/3_5.jpg)
+   ![image](15.2/screenshots/3_6.jpg)
 4. (дополнительно)* Создать Application Load Balancer с использованием Instance group и проверкой состояния.
 
 Полезные документы:
