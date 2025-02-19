@@ -1,6 +1,6 @@
 resource "yandex_lb_network_load_balancer" "nlby" {
   name = "nlb"
-
+  
   listener {
     name = "listener-web-servers"
     port = 80

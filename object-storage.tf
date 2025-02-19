@@ -33,7 +33,16 @@ resource "yandex_storage_bucket" "test" {
     read        = var.anonymous_access.read
     list        = var.anonymous_access.list
     config_read = var.anonymous_access.config_read
-  }  
+  } 
+
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        kms_master_key_id = yandex_kms_symmetric_key.key-0.id
+        sse_algorithm     = "aws:kms"
+      }
+    }
+  } 
 }
 
 resource "yandex_storage_object" "test-object" {

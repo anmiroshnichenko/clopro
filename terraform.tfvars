@@ -49,3 +49,6 @@ deploy_policy = {
   "max_deleting"    = 2
 }
 
+// KMS vars
+kms-key_name = "key-0"
+algorithm    = "AES_256"

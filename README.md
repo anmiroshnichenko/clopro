@@ -1,79 +1,58 @@
-# Домашнее задание к занятию «Вычислительные мощности. Балансировщики нагрузки»  
+# Домашнее задание к занятию «Безопасность в облачных провайдерах»  
 
-### Подготовка к выполнению задания
-
-1. Домашнее задание состоит из обязательной части, которую нужно выполнить на провайдере Yandex Cloud, и дополнительной части в AWS (выполняется по желанию). 
-2. Все домашние задания в блоке 15 связаны друг с другом и в конце представляют пример законченной инфраструктуры.  
-3. Все задания нужно выполнить с помощью Terraform. Результатом выполненного домашнего задания будет код в репозитории. 
-4. Перед началом работы настройте доступ к облачным ресурсам из Terraform, используя материалы прошлых лекций и домашних заданий.
+Используя конфигурации, выполненные в рамках предыдущих домашних заданий, нужно добавить возможность шифрования бакета.
 
 ---
-## Задание 1. Yandex Cloud 
+## Задание 1. Yandex Cloud   
 
-**Что нужно сделать**
+1. С помощью ключа в KMS необходимо зашифровать содержимое бакета:  
+   [kms_keys](kms.tf)
+ - создать ключ в KMS;
+   ![image](15.3/screenshots/1_1.jpg)
+   ![image](15.3/screenshots/1_2.jpg)
+ - с помощью ключа зашифровать содержимое бакета, созданного ранее.  
+   ![image](15.3/screenshots/1_3.jpg)
+   ![image](15.3/screenshots/1_4.jpg)
 
-1. Создать бакет Object Storage и разместить в нём файл с картинкой:  
-   [S3](object-storage.tf)
- - Создать бакет в Object Storage с произвольным именем (например, _имя_студента_дата_).  
-   ![image](15.2/screenshots/1_1.jpg)
- - Положить в бакет файл с картинкой.  
-   ![image](15.2/screenshots/1_2.jpg)
- - Сделать файл доступным из интернета.  
-    [Картинка](https://storage.yandexcloud.net/miroshnichenko-15-02/elt.jpg)
-    
-2. Создать группу ВМ в public подсети фиксированного размера с шаблоном LAMP и веб-страницей, содержащей ссылку на картинку из бакета:  
-   [Group-vm](instance-group.tf)
- - Создать Instance Group с тремя ВМ и шаблоном LAMP. Для LAMP рекомендуется использовать `image_id = fd827b91d99psvq5fjit`.
- - Для создания стартовой веб-страницы рекомендуется использовать раздел `user_data` в [meta_data](https://cloud.yandex.ru/docs/compute/concepts/vm-metadata).
-   ![image](15.2/screenshots/2_1.jpg)
- - Разместить в стартовой веб-странице шаблонной ВМ ссылку на картинку из бакета.  
-   ![image](15.2/screenshots/2_2.jpg)
- - Настроить проверку состояния ВМ.  
-   ![image](15.2/screenshots/2_3.jpg)
-   ![image](15.2/screenshots/2_4.jpg)
-3. Подключить группу к сетевому балансировщику:  
-   [NLB](network-load-balancer.tf) 
- - Создать сетевой балансировщик.
-   ![image](15.2/screenshots/3_1.jpg)
-   ![image](15.2/screenshots/3_2.jpg)
- - Проверить работоспособность, удалив одну или несколько ВМ.   
-  #### Удаленные машины создались самостоятельно. 
+2. (Выполняется не в Terraform)* Создать статический сайт в Object Storage c собственным публичным адресом и сделать доступным по HTTPS:
 
-   ![image](15.2/screenshots/3_3.jpg)
-   ![image](15.2/screenshots/3_4.jpg)
-   ![image](15.2/screenshots/3_5.jpg)
-   ![image](15.2/screenshots/3_6.jpg)
-4. (дополнительно)* Создать Application Load Balancer с использованием Instance group и проверкой состояния.
+ - создать сертификат;
+ - создать статическую страницу в Object Storage и применить сертификат HTTPS;
+ - в качестве результата предоставить скриншот на страницу с сертификатом в заголовке (замочек).
 
 Полезные документы:
 
-- [Compute instance group](https://registry.terraform.io/providers/yandex-cloud/yandex/latest/docs/resources/compute_instance_group).
-- [Network Load Balancer](https://registry.terraform.io/providers/yandex-cloud/yandex/latest/docs/resources/lb_network_load_balancer).
-- [Группа ВМ с сетевым балансировщиком](https://cloud.yandex.ru/docs/compute/operations/instance-groups/create-with-balancer).
+- [Настройка HTTPS статичного сайта](https://cloud.yandex.ru/docs/storage/operations/hosting/certificate).
+- [Object Storage bucket](https://registry.terraform.io/providers/yandex-cloud/yandex/latest/docs/resources/storage_bucket).
+- [KMS key](https://registry.terraform.io/providers/yandex-cloud/yandex/latest/docs/resources/kms_symmetric_key).
 
----
+--- 
 ## Задание 2*. AWS (задание со звёздочкой)
 
 Это необязательное задание. Его выполнение не влияет на получение зачёта по домашней работе.
 
 **Что нужно сделать**
 
-Используя конфигурации, выполненные в домашнем задании из предыдущего занятия, добавить к Production like сети Autoscaling group из трёх EC2-инстансов с  автоматической установкой веб-сервера в private домен.
+1. С помощью роли IAM записать файлы ЕС2 в S3-бакет:
+ - создать роль в IAM для возможности записи в S3 бакет;
+ - применить роль к ЕС2-инстансу;
+ - с помощью bootstrap-скрипта записать в бакет файл веб-страницы.
+2. Организация шифрования содержимого S3-бакета:
 
-1. Создать бакет S3 и разместить в нём файл с картинкой:   
- - Создать бакет в S3 с произвольным именем (например, _имя_студента_дата_). 
- - Положить в бакет файл с картинкой.
- - Сделать доступным из интернета.
+ - используя конфигурации, выполненные в домашнем задании из предыдущего занятия, добавить к созданному ранее бакету S3 возможность шифрования Server-Side, используя общий ключ;
+ - включить шифрование SSE-S3 бакету S3 для шифрования всех вновь добавляемых объектов в этот бакет.
 
-2. Сделать Launch configurations с использованием bootstrap-скрипта с созданием веб-страницы, на которой будет ссылка на картинку в S3. 
-3. Загрузить три ЕС2-инстанса и настроить LB с помощью Autoscaling Group.
+3. *Создание сертификата SSL и применение его к ALB:
+
+ - создать сертификат с подтверждением по email;
+ - сделать запись в Route53 на собственный поддомен, указав адрес LB;
+ - применить к HTTPS-запросам на LB созданный ранее сертификат.
 
 Resource Terraform:
 
-- [S3 bucket](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket)
-- [Launch Template](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template).
-- [Autoscaling group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_group).
-- [Launch configuration](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_configuration).
+- [IAM Role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role).
+- [AWS KMS](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key).
+- [S3 encrypt with KMS key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_object#encrypting-with-kms-key).
 
 Пример bootstrap-скрипта:
 
@@ -84,7 +63,10 @@ service httpd start
 chkconfig httpd on
 cd /var/www/html
 echo "<html><h1>My cool web-server</h1></html>" > index.html
+aws s3 mb s3://mysuperbacketname2021
+aws s3 cp index.html s3://mysuperbacketname2021
 ```
+
 ### Правила приёма работы
 
 Домашняя работа оформляется в своём Git репозитории в файле README.md. Выполненное домашнее задание пришлите ссылкой на .md-файл в вашем репозитории.

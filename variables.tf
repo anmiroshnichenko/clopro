@@ -200,3 +200,20 @@ variable "deploy_policy" {
   type = map(number)
   description = "The deployment policy of the instance group."
 }
+
+// KMS vars 
+variable "kms-key_name" {
+  type        = string  
+  description = "Name of the key." 
+} 
+
+variable "algorithm" {
+  type        = string  
+  description = "Encryption algorithm to be used with a new key version, generated with the next rotation. The default value is AES_128." 
+} 
+
+variable "rotation_period" {
+  type        = string
+  default     = "8760h" // equal to 1 year
+  description = "Interval between automatic rotations. To disable automatic rotation, omit this parameter."
+}
